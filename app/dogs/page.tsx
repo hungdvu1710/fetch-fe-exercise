@@ -1,6 +1,5 @@
 "use client";
 import {
-  AlertDialog,
   Button,
   TextFieldInput,
   TextFieldRoot,
@@ -13,6 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "../components/ErrorMessage";
 import { dogSearchSchema } from "../validationSchema";
+import LoginErrorDialog from "../components/LoginErrorDialog";
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 
@@ -28,6 +28,9 @@ const Dogs = () => {
   } = useForm<dogSearchInputs>({
     resolver: zodResolver(dogSearchSchema),
   });
+  const returnToLoginPage = () => {
+    router.push("/");
+  }
 
   const [breeds, setBreeds] = React.useState([]);
 
@@ -67,20 +70,7 @@ const Dogs = () => {
 
   return (
     <div>
-      <AlertDialog.Root open={!isAuthenticated}>
-        <AlertDialog.Content>
-          <AlertDialog.Title>Error</AlertDialog.Title>
-          <AlertDialog.Description size="2">
-            You need to log in first
-          </AlertDialog.Description>
-          <AlertDialog.Action className="mt-5">
-            <Button style={{ background: "red" }} onClick={() => router.push('/')}>
-              Return to login page
-            </Button>
-          </AlertDialog.Action>
-        </AlertDialog.Content>
-      </AlertDialog.Root>
-
+      <LoginErrorDialog isAuthenticated={isAuthenticated} returnToLoginPage={returnToLoginPage} />
       <form className="my-2 space-y-3 max-w-xl" onSubmit={onSubmit}>
         <select
           data-te-select-init
