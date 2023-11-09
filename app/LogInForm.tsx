@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
-import { useForm, Controller, set } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { loginSchema } from "./validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "./components/ErrorMessage";
