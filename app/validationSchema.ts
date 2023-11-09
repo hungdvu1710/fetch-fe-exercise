@@ -15,11 +15,11 @@ export const dogSearchSchema = z.object({
 }).refine((data) => {
   if (data.agemin !== undefined && data.agemax !== undefined) {
     if (data.agemin > data.agemax) {
-      return {
-        agemin: "Age Min must be less than or equal to Age Max",
-        agemax: "Age Max must be greater than or equal to Age Min",
-      };
+      return false;
     }
   }
   return true;
+}, {
+  message: "Age Min must be less than or equal to Age Max",
+  path: ["agemin"],
 });

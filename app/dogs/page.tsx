@@ -13,8 +13,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "../components/ErrorMessage";
 import { dogSearchSchema } from "../validationSchema";
 import LoginErrorDialog from "../components/LoginErrorDialog";
+import axios from "axios";
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
+const dogs_search_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/search";
 
 type dogSearchInputs = z.infer<typeof dogSearchSchema>;
 
@@ -35,8 +37,12 @@ const Dogs = () => {
   const [breeds, setBreeds] = React.useState([]);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-    console.log(errors);
+    const response = await axios.get(dogs_search_url, {
+      params: data,
+      withCredentials: true
+    });
+    const dogs_list = response.data;
+    console.log(dogs_list);
     return;
   });
 
