@@ -27,10 +27,10 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
           src={props.img}
           alt={props.name}
           width={200}
-          height={140}
+          height={300}
           style={{
             objectFit: "cover",
-            height: "200px",
+            height: "100%",
             width: "100%",
             backgroundColor: "var(--gray-5)",
           }}
@@ -40,7 +40,7 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
         <Strong>{props.name}</Strong>
       </Text>
       <Text as="div" size="3">
-        Age: {props.age} - Breeds: {props.breed}
+        Age: {props.age} - Breed: {props.breed}
       </Text>
     </Card>
   );
