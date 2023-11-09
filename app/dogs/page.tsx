@@ -1,6 +1,7 @@
 "use client";
 import {
   Button,
+  Heading,
   TextFieldInput,
   TextFieldRoot,
 } from "@radix-ui/themes";
@@ -14,6 +15,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { dogSearchSchema } from "../validationSchema";
 import LoginErrorDialog from "../components/LoginErrorDialog";
 import axios from "axios";
+import DogResults from "./DogResults";
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 const dogs_search_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/search";
@@ -35,6 +37,7 @@ const Dogs = () => {
   }
 
   const [breeds, setBreeds] = React.useState([]);
+  const [dogIds, setDogIds] = React.useState([]);
 
   const onSubmit = handleSubmit(async (data) => {
     const response = await axios.get(dogs_search_url, {
@@ -42,6 +45,7 @@ const Dogs = () => {
       withCredentials: true
     });
     const dogs_list = response.data;
+    setDogIds(dogs_list.resultIds);
     console.log(dogs_list);
     return;
   });
@@ -76,6 +80,7 @@ const Dogs = () => {
 
   return (
     <div>
+      <Heading>Let&rsquo;s look for your dogs</Heading>
       <LoginErrorDialog isAuthenticated={isAuthenticated} returnToLoginPage={returnToLoginPage} />
       <form className="my-2 space-y-3 max-w-xl" onSubmit={onSubmit}>
         <select
@@ -116,6 +121,7 @@ const Dogs = () => {
         <ErrorMessage>{errors.agemax?.message}</ErrorMessage>
         <Button>Get Dogs</Button>
       </form>
+      {dogIds.length > 0 && <DogResults dogIds={dogIds} />}
     </div>
   );
 };
