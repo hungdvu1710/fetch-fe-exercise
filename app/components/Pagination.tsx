@@ -1,70 +1,53 @@
-import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
-import { Button, Flex, Text } from '@radix-ui/themes';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Button, Flex, Text } from "@radix-ui/themes";
+import React from "react";
+import axios from "axios";
 
 interface Props {
-  itemCount: number;
-  pageSize?: number;
-  currentPage?: number;
+  prev?: string;
+  next?: string;
+  setDogIds: React.Dispatch<React.SetStateAction<Array<never>>>;
+  setPaginationUrls: React.Dispatch<
+    React.SetStateAction<{ prev: string; next: string }>
+  >;
 }
 
-const Pagination = ({
-  itemCount,
-  pageSize,
-  currentPage,
-}: Props) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const Pagination = ({ prev, next, setDogIds, setPaginationUrls }: Props) => {
+  // return null if there's no need for pagination
+  if (!next && !prev) return null;
 
-  if (!pageSize) pageSize = 25;
-  if (!currentPage) currentPage = 1;
-
-  const pageCount = Math.ceil(itemCount / pageSize);
-  if (pageCount <= 1) return null;
-
-  const changePage = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
-    router.push('?' + params.toString());
-  }
+  const changePage = async (url: string | undefined) => {
+    console.log(url)
+    if (!url) return;
+    const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + url, {
+      withCredentials: true,
+    });
+    const dogs_list = response.data;
+    setDogIds(dogs_list.resultIds);
+    setPaginationUrls({
+      next: response.data.next ?? "",
+      prev: response.data.prev ?? "",
+    });
+    return;
+  };
 
   return (
     <Flex align="center" gap="2">
-      <Text size="2">
-        Page {currentPage} of {pageCount}
-      </Text>
       <Button
         color="gray"
         variant="soft"
-        disabled={currentPage === 1}
-        onClick={() => changePage(1)}
+        disabled={!prev}
+        onClick={() => changePage(prev)}
       >
-        <DoubleArrowLeftIcon />
+        <ChevronLeftIcon />
       </Button>
       <Button
         color="gray"
         variant="soft"
-        disabled={currentPage === 1}
-          onClick={() => changePage(currentPage ? currentPage - 1 : 1)}
-        >
-          <ChevronLeftIcon />
-        </Button>
-        <Button
-          color="gray"
-          variant="soft"
-          disabled={currentPage === pageCount || !currentPage}
-          onClick={() => changePage((currentPage || 0) + 1)}
+        disabled={!next}
+        onClick={() => changePage(next)}
       >
         <ChevronRightIcon />
-      </Button>
-      <Button
-        color="gray"
-        variant="soft"
-        disabled={currentPage === pageCount}
-        onClick={() => changePage(pageCount)}
-      >
-        <DoubleArrowRightIcon />
       </Button>
     </Flex>
   );

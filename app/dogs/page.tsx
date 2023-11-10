@@ -19,13 +19,9 @@ const Dogs = ({
 }) => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const returnToLoginPage = () => {
-    router.push("/");
-  };
-
+  const [paginationUrls, setPaginationUrls] = useState({ prev: "", next: "" });
   const [breeds, setBreeds] = React.useState([]);
   const [dogIds, setDogIds] = React.useState([]);
-  const [total, setTotal] = React.useState(0);
 
   //pre-load breeds
   const getBreeds = async () => {
@@ -49,19 +45,21 @@ const Dogs = ({
   }, []);
 
   return (
-    <div>
+    <div className="space-y-3">
       <Heading>Let&rsquo;s look for your dogs</Heading>
-      <LoginErrorDialog
-        isAuthenticated={isAuthenticated}
-        returnToLoginPage={returnToLoginPage}
-      />
+      <LoginErrorDialog isAuthenticated={isAuthenticated} />
       <DogSearchForm
         breeds={breeds}
         setDogIds={setDogIds}
-        setTotal={setTotal}
+        setPaginationUrls={setPaginationUrls}
       />
       {dogIds.length > 0 && <DogResults dogIds={dogIds} />}
-      <Pagination itemCount={total} pageSize={searchParams.size} currentPage={searchParams.page} />
+      <Pagination
+        setDogIds={setDogIds}
+        setPaginationUrls={setPaginationUrls}
+        next={paginationUrls.next}
+        prev={paginationUrls.prev}
+      />
     </div>
   );
 };
