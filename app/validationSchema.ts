@@ -12,6 +12,9 @@ export const dogSearchSchema = z.object({
   breeds: z.array(z.string()).optional(),
   agemin: z.number({invalid_type_error: "Age Min must be a number"}).optional(),
   agemax: z.number({invalid_type_error: "Age Max must be a number"}).optional(),
+  size: z.number({invalid_type_error: "Size must be a number"}).optional(),
+  from: z.number({invalid_type_error: "From must be a number"}).optional(),
+  sort: z.string().optional(),
 }).refine((data) => {
   if (data.agemin !== undefined && data.agemax !== undefined) {
     if (data.agemin > data.agemax) {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import DogCard from "./DogCard";
 import axios from "axios";
-import { Flex, Grid } from "@radix-ui/themes";
+import { Grid } from "@radix-ui/themes";
 import { useWindowSize, useEventListener } from "usehooks-ts";
 
 const dogs_search_with_ids_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs";
@@ -41,18 +41,18 @@ const DogResults = ({ dogIds }: { dogIds: Array<number> }) => {
 
   useEventListener("resize", handleResize);
 
-  const getDogsWithIds = async () => {
-    const response = await axios.post(dogs_search_with_ids_url, dogIds, {
-      withCredentials: true,
-    });
-
-    setDogs(response.data);
-    console.log(response.data);
-  };
-
   useEffect(() => {
+    const getDogsWithIds = async () => {
+      const response = await axios.post(dogs_search_with_ids_url, dogIds, {
+        withCredentials: true,
+      });
+
+      setDogs(response.data);
+      console.log(response.data);
+    };
+
     getDogsWithIds();
-  }, []);
+  }, [dogIds]);
 
   return (
     <Grid columns={numCols.toString()} gap="6" width="auto">

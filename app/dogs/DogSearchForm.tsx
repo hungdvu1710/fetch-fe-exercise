@@ -18,9 +18,11 @@ const dogs_search_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/search";
 const DogSearchForm = ({
   setDogIds,
   breeds,
+  setTotal,
 }: {
   breeds: Array<string>;
   setDogIds: React.Dispatch<React.SetStateAction<Array<never>>>;
+  setTotal: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const {
     register,
@@ -37,6 +39,7 @@ const DogSearchForm = ({
     });
     const dogs_list = response.data;
     setDogIds(dogs_list.resultIds);
+    setTotal(dogs_list.total);
     console.log(dogs_list);
     return;
   });
