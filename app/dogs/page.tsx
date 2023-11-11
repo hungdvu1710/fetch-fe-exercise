@@ -1,11 +1,11 @@
 "use client";
 import { Heading } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import LoginErrorDialog from "../components/LoginErrorDialog";
 import DogResults from "./DogResults";
 import DogSearchForm from "./DogSearchForm";
 import Pagination from "../components/Pagination";
+import NavBar from "./NavBar";
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 
@@ -17,7 +17,6 @@ const Dogs = ({
     size: number;
   };
 }) => {
-  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [paginationUrls, setPaginationUrls] = useState({ prev: "", next: "" });
   const [breeds, setBreeds] = React.useState([]);
@@ -46,6 +45,7 @@ const Dogs = ({
 
   return (
     <div className="space-y-3">
+      <NavBar />
       <Heading>Let&rsquo;s look for your dogs</Heading>
       <LoginErrorDialog isAuthenticated={isAuthenticated} />
       <DogSearchForm
