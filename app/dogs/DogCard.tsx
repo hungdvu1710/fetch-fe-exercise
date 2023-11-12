@@ -1,25 +1,28 @@
 import React from "react";
 import { Card, Inset, Strong, Text } from "@radix-ui/themes";
 import Image from "next/image";
-
-/* 
-age: 5
-breed: "Afghan Hound"
-id: "UXGFTIcBOvEgQ5OCx5kh"
-img: "https://frontend-take-home.fetch.com/dog-images/n02088094-Afghan_hound/n02088094_10263.jpg"
-name: "Trisha"
-zip_code: "24431" */
-
-interface DogCardProps {
-  age: number;
-  breed: string;
-  id: string;
-  img: string;
-  name: string;
-  zip_code: string;
-}
+import { DogCardProps, FavoriteDog } from "../types";
 
 const DogCard = ({ props }: { props: DogCardProps }) => {
+  const [checked, setChecked] = React.useState(false);
+  const handleChange = () => {
+    if (!checked) {
+      setChecked(true);
+      const newFavDog = {
+        age: props.age,
+        breed: props.breed,
+        id: props.id,
+        name: props.name,
+        img: props.img,
+      }
+      props.setFavoriteList((prev) => [...prev, newFavDog]);
+    } else {
+      const updatedFavList = props.favoriteList.filter((dog: FavoriteDog) => dog.id !== props.id);
+      props.setFavoriteList(updatedFavList)
+      setChecked(false);
+    }
+  }
+
   return (
     <Card>
       <Inset clip="padding-box" side="top" pb="current">
@@ -39,6 +42,10 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
       <Text as="div" size="4" weight="bold">
         <Strong>{props.name}</Strong>
       </Text>
+      <div className="space-x-2">
+        <input type="checkbox" id="Favorite" onChange={handleChange}/>
+        <label htmlFor="Favorite">Favorite</label>
+      </div>
       <Text as="div" size="3">
         Age: {props.age} - Breed: {props.breed}
       </Text>

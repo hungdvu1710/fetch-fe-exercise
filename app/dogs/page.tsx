@@ -6,21 +6,16 @@ import DogResults from "./DogResults";
 import DogSearchForm from "./DogSearchForm";
 import Pagination from "../components/Pagination";
 import NavBar from "./NavBar";
+import { FavoriteDog } from "../types";
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 
-const Dogs = ({
-  searchParams,
-}: {
-  searchParams: {
-    page: number;
-    size: number;
-  };
-}) => {
+const Dogs = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [paginationUrls, setPaginationUrls] = useState({ prev: "", next: "" });
-  const [breeds, setBreeds] = React.useState([]);
-  const [dogIds, setDogIds] = React.useState([]);
+  const [breeds, setBreeds] = React.useState<Array<string>>([]);
+  const [dogIds, setDogIds] = React.useState<Array<string>>([]);
+  const [favoriteList, setFavoriteList] = React.useState<Array<FavoriteDog>>([]);
 
   //pre-load breeds
   const getBreeds = async () => {
@@ -53,7 +48,13 @@ const Dogs = ({
         setDogIds={setDogIds}
         setPaginationUrls={setPaginationUrls}
       />
-      {dogIds.length > 0 && <DogResults dogIds={dogIds} />}
+      {dogIds.length > 0 && (
+        <DogResults
+          dogIds={dogIds}
+          favoriteList={favoriteList}
+          setFavoriteList={setFavoriteList}
+        />
+      )}
       <Pagination
         setDogIds={setDogIds}
         setPaginationUrls={setPaginationUrls}

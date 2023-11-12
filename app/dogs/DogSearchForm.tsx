@@ -26,7 +26,7 @@ const DogSearchForm = ({
   setPaginationUrls,
 }: {
   breeds: Array<string>;
-  setDogIds: React.Dispatch<React.SetStateAction<Array<never>>>;
+  setDogIds: React.Dispatch<React.SetStateAction<Array<string>>>;
   setPaginationUrls: React.Dispatch<React.SetStateAction<{ prev: string; next: string; }>>;
 }) => {
   useEffect(() => {
