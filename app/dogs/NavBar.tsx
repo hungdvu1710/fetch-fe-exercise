@@ -2,6 +2,7 @@ import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import FavDogs from "./FavDogs";
 
 const navTriggerClassNames =
   "py-2 px-3 outline-none select-none font-semibold text-base leading-6 rounded-md text-violet-600 focus:ring-2 focus:ring-violet-400 hover:bg-violet-200";
@@ -33,7 +34,9 @@ const NavBar = () => {
           <NavigationMenu.Content
             className={navContentClassNames}
             style={{ margin: "4px" }}
-          ></NavigationMenu.Content>
+          >
+            <FavDogs />
+          </NavigationMenu.Content>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item>

@@ -3,10 +3,16 @@ import { Heading } from "@radix-ui/themes";
 import React, { useEffect, useState } from "react";
 import LoginErrorDialog from "../components/LoginErrorDialog";
 import DogResults from "./DogResults";
-import DogSearchForm from "./DogSearchForm";
+// import DogSearchForm from "./DogSearchForm";
 import Pagination from "../components/Pagination";
 import NavBar from "./NavBar";
-import { FavoriteDog } from "../types";
+import { useGlobalContext } from "../Context/store";
+import dynamic from 'next/dynamic'
+
+const DogSearchForm = dynamic(() => import('./DogSearchForm'), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+})
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 
@@ -14,8 +20,7 @@ const Dogs = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [paginationUrls, setPaginationUrls] = useState({ prev: "", next: "" });
   const [breeds, setBreeds] = React.useState<Array<string>>([]);
-  const [dogIds, setDogIds] = React.useState<Array<string>>([]);
-  const [favoriteList, setFavoriteList] = React.useState<Array<FavoriteDog>>([]);
+  const { dogIds } = useGlobalContext();
 
   //pre-load breeds
   const getBreeds = async () => {
@@ -45,18 +50,12 @@ const Dogs = () => {
       <LoginErrorDialog isAuthenticated={isAuthenticated} />
       <DogSearchForm
         breeds={breeds}
-        setDogIds={setDogIds}
         setPaginationUrls={setPaginationUrls}
       />
       {dogIds.length > 0 && (
-        <DogResults
-          dogIds={dogIds}
-          favoriteList={favoriteList}
-          setFavoriteList={setFavoriteList}
-        />
+        <DogResults />
       )}
       <Pagination
-        setDogIds={setDogIds}
         setPaginationUrls={setPaginationUrls}
         next={paginationUrls.next}
         prev={paginationUrls.prev}

@@ -2,8 +2,10 @@ import React from "react";
 import { Card, Inset, Strong, Text } from "@radix-ui/themes";
 import Image from "next/image";
 import { DogCardProps, FavoriteDog } from "../types";
+import { useGlobalContext } from "../Context/store";
 
 const DogCard = ({ props }: { props: DogCardProps }) => {
+  const { favoriteList, setFavoriteList } = useGlobalContext();
   const [checked, setChecked] = React.useState(false);
   const handleChange = () => {
     if (!checked) {
@@ -15,10 +17,10 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
         name: props.name,
         img: props.img,
       }
-      props.setFavoriteList((prev) => [...prev, newFavDog]);
+      setFavoriteList((prev) => [...prev, newFavDog]);
     } else {
-      const updatedFavList = props.favoriteList.filter((dog: FavoriteDog) => dog.id !== props.id);
-      props.setFavoriteList(updatedFavList)
+      const updatedFavList = favoriteList.filter((dog: FavoriteDog) => dog.id !== props.id);
+      setFavoriteList(updatedFavList)
       setChecked(false);
     }
   }
@@ -43,8 +45,8 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
         <Strong>{props.name}</Strong>
       </Text>
       <div className="space-x-2">
-        <input type="checkbox" id="Favorite" onChange={handleChange}/>
-        <label htmlFor="Favorite">Favorite</label>
+        <input type="checkbox" id={props.id} onChange={handleChange}/>
+        <label htmlFor={props.id}>Favorite</label>
       </div>
       <Text as="div" size="3">
         Age: {props.age} - Breed: {props.breed}

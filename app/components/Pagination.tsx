@@ -1,18 +1,19 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Button, Flex, Text } from "@radix-ui/themes";
+import { useGlobalContext } from "../Context/store";
 import React from "react";
 import axios from "axios";
 
 interface Props {
   prev?: string;
   next?: string;
-  setDogIds: React.Dispatch<React.SetStateAction<Array<string>>>;
   setPaginationUrls: React.Dispatch<
     React.SetStateAction<{ prev: string; next: string }>
   >;
 }
 
-const Pagination = ({ prev, next, setDogIds, setPaginationUrls }: Props) => {
+const Pagination = ({ prev, next, setPaginationUrls }: Props) => {
+  const { setDogIds } = useGlobalContext();
   // return null if there's no need for pagination
   if (!next && !prev) return null;
 

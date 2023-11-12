@@ -13,8 +13,6 @@ export interface DogCardProps {
   img: string;
   name: string;
   zip_code: string;
-  favoriteList: Array<FavoriteDog>;
-  setFavoriteList: React.Dispatch<React.SetStateAction<Array<FavoriteDog>>>;
 }
 
 

@@ -1,12 +1,12 @@
 import { Button, Flex, TextFieldInput, TextFieldRoot } from "@radix-ui/themes";
-import { Select, initTE, Input } from "tw-elements";
 import React, { useEffect } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { dogSearchSchema } from "../validationSchema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
+import { useGlobalContext } from "../Context/store";
 
 type dogSearchInputs = z.infer<typeof dogSearchSchema>;
 const dogs_search_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/search";
@@ -21,21 +21,22 @@ const sortOptions = [
 ];
 
 const DogSearchForm = ({
-  setDogIds,
   breeds,
   setPaginationUrls,
 }: {
   breeds: Array<string>;
-  setDogIds: React.Dispatch<React.SetStateAction<Array<string>>>;
   setPaginationUrls: React.Dispatch<React.SetStateAction<{ prev: string; next: string; }>>;
 }) => {
+  const { setDogIds } = useGlobalContext();
+
   useEffect(() => {
     const init = async () => {
-      await initTE({ Select, Input });
+      const { Select, initTE, Input } = await import("tw-elements");
+      initTE({ Select, Input });
     };
-    initTE({ Select, Input });
     init();
   }, []);
+
 
   const {
     register,

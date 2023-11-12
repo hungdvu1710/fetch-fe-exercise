@@ -3,19 +3,13 @@ import DogCard from "./DogCard";
 import axios from "axios";
 import { Grid } from "@radix-ui/themes";
 import { useWindowSize, useEventListener } from "usehooks-ts";
-import { DogCardProps, FavoriteDog } from "../types";
+import { DogCardProps } from "../types";
+import { useGlobalContext } from "../Context/store";
 
 const dogs_search_with_ids_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs";
 
-const DogResults = ({
-  dogIds,
-  favoriteList,
-  setFavoriteList,
-}: {
-  dogIds: Array<string>;
-  favoriteList: Array<FavoriteDog>;
-  setFavoriteList: React.Dispatch<React.SetStateAction<Array<FavoriteDog>>>;
-}) => {
+const DogResults = () => {
+  const { dogIds } = useGlobalContext();
   const [dogs, setDogs] = React.useState([]);
   const { width } = useWindowSize();
   const [numCols, setNumCols] = React.useState(
@@ -57,8 +51,6 @@ const DogResults = ({
   return (
     <Grid columns={numCols.toString()} gap="6" width="auto">
       {dogs.map((dog: DogCardProps) => {
-        dog.favoriteList = favoriteList;
-        dog.setFavoriteList = setFavoriteList;
         return <DogCard props={dog} key={dog.id} />;
       })}
     </Grid>
