@@ -3,6 +3,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import FavDogs from "./FavDogs";
+import LocationSearchForm from "./LocationSearchForm";
 
 const navTriggerClassNames =
   "py-2 px-3 outline-none select-none font-semibold text-base leading-6 rounded-md text-violet-600 focus:ring-2 focus:ring-violet-400 hover:bg-violet-200";
@@ -46,7 +47,9 @@ const NavBar = () => {
           </NavigationMenu.Trigger>
           <NavigationMenu.Content
             className={navContentClassNames}
-          ></NavigationMenu.Content>
+          >
+            <LocationSearchForm />
+          </NavigationMenu.Content>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item className="relative">
@@ -63,8 +66,8 @@ const NavBar = () => {
         </NavigationMenu.Indicator>
       </NavigationMenu.List>
 
-      <div className="absolute flex justify-center w-full top-full perspective-2000">
-        <NavigationMenu.Viewport className="overflow-x-hidden overflow-y-scroll  m-2 w-full bg-white rounded-lg shadow-2xl h-96 transition-width transform-300 ease" />
+      <div className="absolute flex justify-center w-full top-full">
+        <NavigationMenu.Viewport className="overflow-x-hidden overflow-y-scroll m-1 w-full bg-white rounded-lg shadow-2xl h-96 transition-width transform-300 ease" />
       </div>
     </NavigationMenu.Root>
   );

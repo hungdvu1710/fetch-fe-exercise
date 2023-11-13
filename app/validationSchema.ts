@@ -26,3 +26,10 @@ export const dogSearchSchema = z.object({
   message: "Age Min must be less than or equal to Age Max",
   path: ["agemin"],
 });
+
+export const locationSearchSchema = z.object({
+  city: z.string().optional(),
+  states: z.array(z.string()).optional(),
+  from: z.number({invalid_type_error: "From must be a number"}).optional(),
+  sort: z.string().optional(),
+})

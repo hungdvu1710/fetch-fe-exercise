@@ -15,4 +15,13 @@ export interface DogCardProps {
   zip_code: string;
 }
 
+export interface Location {
+  zip_code: string
+  latitude: number
+  longitude: number
+  city: string
+  state: string
+  county: string
+}
+
 
