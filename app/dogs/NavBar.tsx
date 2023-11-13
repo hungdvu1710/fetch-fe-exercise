@@ -9,7 +9,7 @@ const navTriggerClassNames =
 const caretIconClassNames =
   "relative text-violet-500 top-1 transform transition-transform-250 ease";
 const navContentClassNames =
-  "absolute top-0 left-0 w-full animation-duration-250 ease";
+  "scroll-smooth top-0 left-0 w-full animation-duration-250 ease";
 const log_out_url = process.env.NEXT_PUBLIC_BASE_URL + "/auth/logout";
 
 const NavBar = () => {
@@ -64,7 +64,7 @@ const NavBar = () => {
       </NavigationMenu.List>
 
       <div className="absolute flex justify-center w-full top-full perspective-2000">
-        <NavigationMenu.Viewport className="m-2 w-full bg-white rounded-lg overflow-hidden shadow-2xl h-96 transition-width transform-300 ease" />
+        <NavigationMenu.Viewport className="overflow-x-hidden overflow-y-scroll  m-2 w-full bg-white rounded-lg shadow-2xl h-96 transition-width transform-300 ease" />
       </div>
     </NavigationMenu.Root>
   );
