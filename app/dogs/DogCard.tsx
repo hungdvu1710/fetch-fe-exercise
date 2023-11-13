@@ -6,10 +6,10 @@ import { useGlobalContext } from "../Context/store";
 
 const DogCard = ({ props }: { props: DogCardProps }) => {
   const { favoriteList, setFavoriteList } = useGlobalContext();
-  const [checked, setChecked] = React.useState(false);
-  const handleChange = () => {
-    if (!checked) {
-      setChecked(true);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
       const newFavDog = {
         age: props.age,
         breed: props.breed,
@@ -21,7 +21,6 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
     } else {
       const updatedFavList = favoriteList.filter((dog: FavoriteDog) => dog.id !== props.id);
       setFavoriteList(updatedFavList)
-      setChecked(false);
     }
   }
 
@@ -45,7 +44,7 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
         <Strong>{props.name}</Strong>
       </Text>
       <div className="space-x-2">
-        <input type="checkbox" id={props.id} onChange={handleChange}/>
+        <input type="checkbox" id={props.id} onChange={handleChange} checked={favoriteList.some((favDog) => favDog.id === props.id)}/>
         <label htmlFor={props.id}>Favorite</label>
       </div>
       <Text as="div" size="3">
