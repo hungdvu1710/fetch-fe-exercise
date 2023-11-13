@@ -30,7 +30,6 @@ const DogResults = () => {
     } else {
       setNumCols(6);
     }
-    console.log(width);
   };
 
   useEventListener("resize", handleResize);
@@ -42,7 +41,6 @@ const DogResults = () => {
       });
 
       setDogs(response.data);
-      console.log(response.data);
     };
 
     getDogsWithIds();

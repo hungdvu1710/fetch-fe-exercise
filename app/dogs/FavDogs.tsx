@@ -20,8 +20,6 @@ const FavDogs = () => {
 
     const { match } = response.data;
     setMatchedId(match);
-
-    console.log(match);
     return;
   }
 

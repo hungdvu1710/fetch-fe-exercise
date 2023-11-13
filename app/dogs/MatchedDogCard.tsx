@@ -20,7 +20,6 @@ const MatchedDogCard = ({ matchedId }: { matchedId: string }) => {
       const response = await axios.post(dogs_search_with_ids_url, [matchedId], {
         withCredentials: true,
       });
-      console.log(response.data);
       setMatchedDog(response.data[0]);
     };
 

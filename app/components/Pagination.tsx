@@ -18,7 +18,6 @@ const Pagination = ({ prev, next, setPaginationUrls }: Props) => {
   if (!next && !prev) return null;
 
   const changePage = async (url: string | undefined) => {
-    console.log(url)
     if (!url) return;
     const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + url, {
       withCredentials: true,

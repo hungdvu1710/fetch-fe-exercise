@@ -58,8 +58,6 @@ const DogSearchForm = ({
       next: response.data.next ?? '',
       prev: response.data.prev ?? '',
     })
-
-    console.log(dogs_list);
     return;
   });
 
