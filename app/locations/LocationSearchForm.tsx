@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -7,15 +7,15 @@ import axios from "axios";
 import { locationSearchSchema } from "../validationSchema";
 import {
   Button,
-  Flex,
   Heading,
   TextFieldInput,
   TextFieldRoot,
-  Text,
 } from "@radix-ui/themes";
 import statesData from "../utils/states.json";
 import Select from "react-select";
 import { Location } from "../types";
+import LocationResults from "./LocationResults";
+import LocationPagination from "../components/LocationPagination";
 
 type locationSearchInputs = z.infer<typeof locationSearchSchema>;
 const locations_search_url =
@@ -31,13 +31,22 @@ const LocationSearchForm = () => {
     resolver: zodResolver(locationSearchSchema),
   });
 
-  const [location_list, setLocationList] = React.useState<Location[]>([]);
+  const [requestBody, setRequestBody] = React.useState<locationSearchInputs>({
+    states: [],
+    city: "",
+    size: 25,
+    from: 0,
+  });
+  const [numResults, setNumResults] = React.useState(0);
+  const [location_list, setLocationList] = React.useState<Array<Location>>([]);
 
   const onSubmit = handleSubmit(async (data) => {
     const response = await axios.post(locations_search_url, data, {
       withCredentials: true,
     });
+    setRequestBody(data);
     const { results, total } = response.data;
+    setNumResults(total);
     setLocationList(results);
     return;
   });
@@ -69,22 +78,18 @@ const LocationSearchForm = () => {
         <TextFieldRoot>
           <TextFieldInput placeholder="City" {...register("city")} />
         </TextFieldRoot>
-        <Button
-          type="submit"
-          className="bg-blue"
-          style={{ backgroundColor: "rgb(37 99 235)" }}
-        >
-          Search
-        </Button>
+        <Button>Search</Button>
       </form>
       {location_list.length > 0 && (
-        <Flex wrap="wrap" gap="3">
-          {location_list.map((location: Location) => (
-            <Text size="5" key={location.zip_code}>
-              {location.zip_code}{" "}
-            </Text>
-          ))}
-        </Flex>
+        <LocationResults location_list={location_list} />
+      )}
+      {location_list.length > 0 && (
+        <LocationPagination
+          requestBody={requestBody}
+          setLocationList={setLocationList}
+          setRequestBody={setRequestBody}
+          numResults={numResults}
+        />
       )}
     </div>
   );

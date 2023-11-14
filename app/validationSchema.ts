@@ -66,7 +66,7 @@ export const dogSearchSchema = z.object({
 export const locationSearchSchema = z.object({
   city: z.string().optional(),
   states: z.array(z.string()).optional(),
-  from: z.number({invalid_type_error: "From must be a number"}).optional(),
-  sort: z.string().optional(),
+  from: z.number({invalid_type_error: "From must be a number"}).default(0).optional(),
+  size: z.number().default(25),
   // geoBoundingBox: geoBoundingBoxSchema.optional(),
 })
