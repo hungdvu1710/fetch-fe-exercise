@@ -5,18 +5,19 @@ import axios from "axios";
 import { z } from "zod";
 import { locationSearchSchema } from "../validationSchema";
 import { Location } from "../types";
+import { useGlobalContext } from "../Context/store";
 
 type locationSearchInputs = z.infer<typeof locationSearchSchema>;
 interface Props {
   requestBody: locationSearchInputs;
-  setLocationList: React.Dispatch<React.SetStateAction<Array<Location>>>;
   setRequestBody: React.Dispatch<React.SetStateAction<locationSearchInputs>>;
   numResults: number
 }
 const locations_search_url =
   process.env.NEXT_PUBLIC_BASE_URL + "/locations/search";
 
-const LocationPagination = ({ requestBody, setLocationList, setRequestBody, numResults }: Props) => {
+const LocationPagination = ({ requestBody, setRequestBody, numResults }: Props) => {
+  const { setLocationList } = useGlobalContext();
   const changePage = async (from: number) => {
     const response = await axios.post(locations_search_url, { ...requestBody, from }, {
       withCredentials: true,

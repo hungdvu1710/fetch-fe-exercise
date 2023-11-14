@@ -1,5 +1,5 @@
 import { Button, Flex, TextFieldInput, TextFieldRoot } from "@radix-ui/themes";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { dogSearchSchema } from "../validationSchema";
 import { z } from "zod";
@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
 import { useGlobalContext } from "../Context/store";
+import CustomSelect from "../components/CustomSelect";
 
 type dogSearchInputs = z.infer<typeof dogSearchSchema>;
 const dogs_search_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/search";
@@ -25,22 +26,16 @@ const DogSearchForm = ({
   setPaginationUrls,
 }: {
   breeds: Array<string>;
-  setPaginationUrls: React.Dispatch<React.SetStateAction<{ prev: string; next: string; }>>;
+  setPaginationUrls: React.Dispatch<
+    React.SetStateAction<{ prev: string; next: string }>
+  >;
 }) => {
   const { setDogIds } = useGlobalContext();
-
-  useEffect(() => {
-    const init = async () => {
-      const { Select, initTE, Input } = await import("tw-elements");
-      initTE({ Select, Input });
-    };
-    init();
-  }, []);
-
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<dogSearchInputs>({
     resolver: zodResolver(dogSearchSchema),
@@ -53,35 +48,35 @@ const DogSearchForm = ({
     });
     const dogs_list = response.data;
     setDogIds(dogs_list.resultIds);
-
     setPaginationUrls({
-      next: response.data.next ?? '',
-      prev: response.data.prev ?? '',
-    })
+      next: response.data.next ?? "",
+      prev: response.data.prev ?? "",
+    });
     return;
   });
 
   return (
     <form className="my-2 space-y-3 max-w-xl" onSubmit={onSubmit}>
-      <div>
-        <select
-          data-te-select-init
-          data-te-select-clear-button="true"
-          multiple
-          data-te-select-placeholder="Select Breeds"
-          {...register("breeds")}
-        >
-          {breeds.map((breed) => (
-            <option key={breed} value={breed}>
-              {breed}
-            </option>
-          ))}
-        </select>
-        <label data-te-select-label-ref>Select Breeds</label>
-      </div>
-      {/* <TextFieldRoot>
-          <TextFieldInput placeholder="Zip Codes (Please Separate by Commas)" />
-        </TextFieldRoot> */}
+      <CustomSelect
+        control={control}
+        selectName={"breeds"}
+        data={breeds.map((breed) => ({ value: breed, label: breed }))}
+        placeholder="Select your breeds"
+        isMulti={true}
+        isClearable={true}
+      />
+      <TextFieldRoot>
+        <TextFieldInput
+          placeholder="Type your Zip Codes separated by commas"
+          id="zipCodes"
+          {...register("zipCodes", {
+            setValueAs: (value) => {
+              if (!value) return undefined;
+              return value.split(",").map((e: string) => e.trim());
+            },
+          })}
+        />
+      </TextFieldRoot>
       <TextFieldRoot>
         <TextFieldInput
           placeholder="Age Min"
@@ -98,36 +93,31 @@ const DogSearchForm = ({
           type="number"
           {...register("agemax", {
             setValueAs: (value) => {
-              if (!value) return undefined
-              return  Number(value)
+              if (!value) return undefined;
+              return Number(value);
             },
           })}
         />
       </TextFieldRoot>
       <ErrorMessage>{errors.agemax?.message}</ErrorMessage>
       <Flex gap="3">
-        <div className="w-1/3">
-          <select
-            data-te-select-init
-            data-te-select-placeholder="Sort By"
-            {...register("sort")}
-          >
-            {sortOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <label data-te-select-label-ref>Sort By</label>
-        </div>
+        <CustomSelect
+          className="w-1/3"
+          control={control}
+          selectName={"sort"}
+          data={sortOptions}
+          placeholder="Sort By"
+          isMulti={false}
+          isClearable={false}
+        />
         <TextFieldRoot className="w-1/3">
           <TextFieldInput
             placeholder="Results Per Page"
             type="number"
             {...register("size", {
               setValueAs: (value) => {
-                if (!value) return undefined
-                return  Number(value)
+                if (!value) return undefined;
+                return Number(value);
               },
             })}
             className="h-full"

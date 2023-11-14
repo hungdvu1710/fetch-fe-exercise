@@ -15,6 +15,7 @@ export const dogSearchSchema = z.object({
   agemax: z.number({invalid_type_error: "Age Max must be a number"}).optional(),
   size: z.number({invalid_type_error: "Size must be a number"}).optional(),
   from: z.number({invalid_type_error: "From must be a number"}).optional(),
+  zipCodes: z.array(z.string()).optional(),
   sort: z.string().optional(),
 }).refine((data) => {
   if (data.agemin !== undefined && data.agemax !== undefined) {

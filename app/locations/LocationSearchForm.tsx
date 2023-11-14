@@ -13,20 +13,20 @@ import {
 } from "@radix-ui/themes";
 import statesData from "../utils/states.json";
 import Select from "react-select";
-import { Location } from "../types";
 import LocationResults from "./LocationResults";
 import LocationPagination from "../components/LocationPagination";
+import { useGlobalContext } from "../Context/store";
 
 type locationSearchInputs = z.infer<typeof locationSearchSchema>;
 const locations_search_url =
   process.env.NEXT_PUBLIC_BASE_URL + "/locations/search";
 
 const LocationSearchForm = () => {
+  const { locationList, setLocationList } = useGlobalContext();
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
   } = useForm<locationSearchInputs>({
     resolver: zodResolver(locationSearchSchema),
   });
@@ -38,7 +38,6 @@ const LocationSearchForm = () => {
     from: 0,
   });
   const [numResults, setNumResults] = React.useState(0);
-  const [location_list, setLocationList] = React.useState<Array<Location>>([]);
 
   const onSubmit = handleSubmit(async (data) => {
     const response = await axios.post(locations_search_url, data, {
@@ -53,7 +52,7 @@ const LocationSearchForm = () => {
 
   return (
     <div className="space-y-3 ml-3 mr-3">
-      <form onSubmit={onSubmit} className="space-y-3">
+      <form onSubmit={onSubmit} className="space-y-3 max-w-xl">
         <Heading>Let&rsquo;s find the Zip Codes for your location</Heading>
         <Controller
           name="states"
@@ -80,13 +79,10 @@ const LocationSearchForm = () => {
         </TextFieldRoot>
         <Button>Search</Button>
       </form>
-      {location_list.length > 0 && (
-        <LocationResults location_list={location_list} />
-      )}
-      {location_list.length > 0 && (
+      <LocationResults />
+      {locationList.length > 0 && (
         <LocationPagination
           requestBody={requestBody}
-          setLocationList={setLocationList}
           setRequestBody={setRequestBody}
           numResults={numResults}
         />

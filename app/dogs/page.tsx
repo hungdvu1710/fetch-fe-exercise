@@ -7,12 +7,7 @@ import DogResults from "./DogResults";
 import Pagination from "../components/Pagination";
 import NavBar from "../components/NavBar";
 import { useGlobalContext } from "../Context/store";
-import dynamic from 'next/dynamic'
-
-const DogSearchForm = dynamic(() => import('./DogSearchForm'), {
-  ssr: false,
-  loading: () => <p>Loading...</p>,
-})
+import DogSearchForm from "./DogSearchForm";
 
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 
