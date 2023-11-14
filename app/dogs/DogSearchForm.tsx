@@ -30,7 +30,7 @@ const DogSearchForm = ({
     React.SetStateAction<{ prev: string; next: string }>
   >;
 }) => {
-  const { setDogIds } = useGlobalContext();
+  const { setDogIds, setIsAuthenticated } = useGlobalContext();
 
   const {
     register,
@@ -42,16 +42,27 @@ const DogSearchForm = ({
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const response = await axios.get(dogs_search_url, {
-      params: data,
-      withCredentials: true,
-    });
-    const dogs_list = response.data;
-    setDogIds(dogs_list.resultIds);
-    setPaginationUrls({
-      next: response.data.next ?? "",
-      prev: response.data.prev ?? "",
-    });
+    try {
+      const response = await axios.get(dogs_search_url, {
+        params: data,
+        withCredentials: true,
+      });
+      if (response.status === 401) {
+        setIsAuthenticated(false);
+        return;
+      } else {
+        setIsAuthenticated(true);
+        const dogs_list = response.data;
+        setDogIds(dogs_list.resultIds);
+        setPaginationUrls({
+          next: response.data.next ?? "",
+          prev: response.data.prev ?? "",
+        });
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
+
     return;
   });
 

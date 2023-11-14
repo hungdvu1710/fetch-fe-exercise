@@ -1,12 +1,12 @@
+"use client";
 import { AlertDialog, Button } from "@radix-ui/themes";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useGlobalContext } from "../Context/store";
 
-const LoginErrorDialog = ({
-  isAuthenticated,
-}: {
-  isAuthenticated: boolean;
-}) => {
+const LoginErrorDialog = () => {
+  const { isAuthenticated, setLocationList, setDogIds, setFavoriteList } =
+    useGlobalContext();
   const router = useRouter();
   return (
     <AlertDialog.Root open={!isAuthenticated}>
@@ -18,7 +18,13 @@ const LoginErrorDialog = ({
         <AlertDialog.Action className="mt-5">
           <Button
             style={{ background: "red" }}
-            onClick={() => router.push("/")}
+            onClick={() => {
+              router.push("/");
+              // clean up context
+              setLocationList([]);
+              setDogIds([]);
+              setFavoriteList([]);
+            }}
           >
             Return to login page
           </Button>

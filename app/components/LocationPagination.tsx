@@ -4,7 +4,6 @@ import React from "react";
 import axios from "axios";
 import { z } from "zod";
 import { locationSearchSchema } from "../validationSchema";
-import { Location } from "../types";
 import { useGlobalContext } from "../Context/store";
 
 type locationSearchInputs = z.infer<typeof locationSearchSchema>;
@@ -17,13 +16,23 @@ const locations_search_url =
   process.env.NEXT_PUBLIC_BASE_URL + "/locations/search";
 
 const LocationPagination = ({ requestBody, setRequestBody, numResults }: Props) => {
-  const { setLocationList } = useGlobalContext();
+  const { setLocationList, setIsAuthenticated } = useGlobalContext();
   const changePage = async (from: number) => {
-    const response = await axios.post(locations_search_url, { ...requestBody, from }, {
-      withCredentials: true,
-    });
-    setLocationList(response.data.results);
-    setRequestBody({ ...requestBody, from });
+    try {
+      const response = await axios.post(locations_search_url, { ...requestBody, from }, {
+        withCredentials: true,
+      });
+      if (response.status === 401) {
+        setIsAuthenticated(false);
+        return;
+      } else {
+        setIsAuthenticated(true);
+        setLocationList(response.data.results);
+        setRequestBody({ ...requestBody, from });
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
     return;
   }
 

@@ -22,7 +22,7 @@ const locations_search_url =
   process.env.NEXT_PUBLIC_BASE_URL + "/locations/search";
 
 const LocationSearchForm = () => {
-  const { locationList, setLocationList } = useGlobalContext();
+  const { locationList, setLocationList, setIsAuthenticated } = useGlobalContext();
   const {
     register,
     handleSubmit,
@@ -40,13 +40,23 @@ const LocationSearchForm = () => {
   const [numResults, setNumResults] = React.useState(0);
 
   const onSubmit = handleSubmit(async (data) => {
-    const response = await axios.post(locations_search_url, data, {
-      withCredentials: true,
-    });
-    setRequestBody(data);
-    const { results, total } = response.data;
-    setNumResults(total);
-    setLocationList(results);
+    try {
+      const response = await axios.post(locations_search_url, data, {
+        withCredentials: true,
+      });
+      if (response.status === 401) {
+        setIsAuthenticated(false);
+        return;
+      } else {
+        setIsAuthenticated(true);
+        setRequestBody(data);
+      const { results, total } = response.data;
+      setNumResults(total);
+      setLocationList(results);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
     return;
   });
 

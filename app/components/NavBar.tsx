@@ -4,6 +4,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import FavDogs from "../dogs/FavDogs";
+import { useGlobalContext } from "../Context/store";
 
 const navTriggerClassNames =
   "py-2 px-3 outline-none select-none font-semibold text-base leading-6 rounded-md text-violet-600 focus:ring-2 focus:ring-violet-400 hover:bg-violet-200";
@@ -14,14 +15,19 @@ const navContentClassNames =
 const log_out_url = process.env.NEXT_PUBLIC_BASE_URL + "/auth/logout";
 
 const NavBar = () => {
+  const { setIsAuthenticated, setDogIds, setFavoriteList, setLocationList } = useGlobalContext();
   const router = useRouter();
   const logOut = async () => {
     try {
       await fetch(log_out_url, { credentials: "include" });
-      router.push("/");
     } catch (error) {
       console.log(error);
     }
+    setIsAuthenticated(false);
+    setDogIds([]);
+    setFavoriteList([]);
+    setLocationList([]);
+    router.push("/");
   };
   const navigateToSearchLocation = () => {
     router.push("/locations");

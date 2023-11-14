@@ -15,6 +15,8 @@ interface GlobalContextProps {
   setDogIds: Dispatch<SetStateAction<Array<string>>>;
   locationList: Array<Location>;
   setLocationList: Dispatch<SetStateAction<Array<Location>>>;
+  isAuthenticated: boolean;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -24,6 +26,8 @@ const GlobalContext = createContext<GlobalContextProps>({
   setDogIds: (): string[] => [],
   locationList: [],
   setLocationList: (): Location[] => [],
+  isAuthenticated: true,
+  setIsAuthenticated: (): boolean => true,
 });
 
 export const GlobalContextProvider = ({
@@ -34,9 +38,10 @@ export const GlobalContextProvider = ({
   const [favoriteList, setFavoriteList] = useState<Array<FavoriteDog>>([]);
   const [dogIds, setDogIds] = useState<Array<string>>([]);
   const [locationList, setLocationList] = useState<Array<Location>>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   return (
-    <GlobalContext.Provider value={{ favoriteList, setFavoriteList, dogIds, setDogIds, locationList, setLocationList }}>
+    <GlobalContext.Provider value={{ favoriteList, setFavoriteList, dogIds, setDogIds, locationList, setLocationList, isAuthenticated, setIsAuthenticated }}>
       {children}
     </GlobalContext.Provider>
   );

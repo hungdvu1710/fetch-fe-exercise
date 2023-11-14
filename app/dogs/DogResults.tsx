@@ -39,7 +39,6 @@ const DogResults = () => {
       const response = await axios.post(dogs_search_with_ids_url, dogIds, {
         withCredentials: true,
       });
-
       setDogs(response.data);
     };
 

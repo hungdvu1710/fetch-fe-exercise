@@ -9,18 +9,26 @@ import MatchedDogCard from "./MatchedDogCard";
 const dogs_match_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/match";
 
 const FavDogs = () => {
-  const { favoriteList } = useGlobalContext();
+  const { favoriteList, setIsAuthenticated } = useGlobalContext();
   const [ matchedId, setMatchedId ] = useState('');
 
   const handleClick = async () => {
     const data = favoriteList.map((dog: FavoriteDog) => dog.id);
-    const response = await axios.post(dogs_match_url, data, {
-      withCredentials: true,
-    });
-
-    const { match } = response.data;
-    setMatchedId(match);
-    return;
+    try {
+      const response = await axios.post(dogs_match_url, data, {
+        withCredentials: true,
+      });
+      if (response.status === 401) {
+        setIsAuthenticated(false);
+        return;
+      } else {
+        const { match } = response.data;
+        setMatchedId(match);
+        return;
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
   }
 
   return (

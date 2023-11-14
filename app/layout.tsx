@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@radix-ui/themes/styles.css";
-import "tw-elements/dist/css/tw-elements.min.css";
 import "./globals.css";
 import { Theme } from "@radix-ui/themes";
 import { GlobalContextProvider } from "./Context/store";

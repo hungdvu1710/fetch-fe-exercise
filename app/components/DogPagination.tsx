@@ -12,7 +12,7 @@ interface Props {
   >;
 }
 
-const Pagination = ({ prev, next, setPaginationUrls }: Props) => {
+const DogPagination = ({ prev, next, setPaginationUrls }: Props) => {
   const { setDogIds } = useGlobalContext();
   // return null if there's no need for pagination
   if (!next && !prev) return null;
@@ -53,4 +53,4 @@ const Pagination = ({ prev, next, setPaginationUrls }: Props) => {
   );
 };
 
-export default Pagination;
+export default DogPagination;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import LoginErrorDialog from "../components/LoginErrorDialog";
 import DogResults from "./DogResults";
 // import DogSearchForm from "./DogSearchForm";
-import Pagination from "../components/Pagination";
+import DogPagination from "../components/DogPagination";
 import NavBar from "../components/NavBar";
 import { useGlobalContext } from "../Context/store";
 import DogSearchForm from "./DogSearchForm";
@@ -12,10 +12,9 @@ import DogSearchForm from "./DogSearchForm";
 const breeds_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/breeds";
 
 const Dogs = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [paginationUrls, setPaginationUrls] = useState({ prev: "", next: "" });
   const [breeds, setBreeds] = React.useState<Array<string>>([]);
-  const { dogIds } = useGlobalContext();
+  const { dogIds, setIsAuthenticated } = useGlobalContext();
 
   //pre-load breeds
   const getBreeds = async () => {
@@ -42,7 +41,7 @@ const Dogs = () => {
     <div className="space-y-3">
       <NavBar />
       <Heading>Let&rsquo;s look for your dogs</Heading>
-      <LoginErrorDialog isAuthenticated={isAuthenticated} />
+      <LoginErrorDialog />
       <DogSearchForm
         breeds={breeds}
         setPaginationUrls={setPaginationUrls}
@@ -50,7 +49,7 @@ const Dogs = () => {
       {dogIds.length > 0 && (
         <DogResults />
       )}
-      <Pagination
+      <DogPagination
         setPaginationUrls={setPaginationUrls}
         next={paginationUrls.next}
         prev={paginationUrls.prev}
