@@ -5,7 +5,7 @@ import LoginErrorDialog from "../components/LoginErrorDialog";
 import DogResults from "./DogResults";
 // import DogSearchForm from "./DogSearchForm";
 import Pagination from "../components/Pagination";
-import NavBar from "./NavBar";
+import NavBar from "../components/NavBar";
 import { useGlobalContext } from "../Context/store";
 import dynamic from 'next/dynamic'
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Coordinates } from "./types";
 
 export const loginSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -27,9 +28,45 @@ export const dogSearchSchema = z.object({
   path: ["agemin"],
 });
 
+// Space for Coordinates Schema
+
+// interface geoBoundingBox {
+//   top?: Coordinates,
+//   left?: Coordinates,
+//   bottom?: Coordinates,
+//   right?: Coordinates,
+//   bottom_left?: Coordinates,
+//   top_left?: Coordinates
+// }
+
+// const coordinatesSchema = z.object({
+//   // Define the schema for the Coordinates interface properties
+//   lat: z.number(),
+//   lon: z.number(),
+// });
+
+// const isValidGeoBoundingBox = (box) => {
+//   const hasTopLeftRight = (box.top && box.left && box.right && box.bottom) !== undefined;
+//   const hasBottomTop = (box.bottom_right && box.top) !== undefined;
+//   return hasTopLeftRight || hasBottomTop;
+// }
+
+
+// const geoBoundingBoxSchema = z.object({
+//   top: coordinatesSchema.optional(),
+//   left: coordinatesSchema.optional(),
+//   bottom: coordinatesSchema.optional(),
+//   right: coordinatesSchema.optional(),
+//   bottom_left: coordinatesSchema.optional(),
+//   top_left: coordinatesSchema.optional(),
+// }).refine(isValidGeoBoundingBox, {
+//   message: 'Invalid GeoBoundingBox: Must contain one of the specified combinations of properties',
+// });
+
 export const locationSearchSchema = z.object({
   city: z.string().optional(),
   states: z.array(z.string()).optional(),
   from: z.number({invalid_type_error: "From must be a number"}).optional(),
   sort: z.string().optional(),
+  // geoBoundingBox: geoBoundingBoxSchema.optional(),
 })

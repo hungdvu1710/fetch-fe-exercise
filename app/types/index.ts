@@ -24,4 +24,8 @@ export interface Location {
   county: string
 }
 
+export interface Coordinates {
+  lat: number;
+  lon: number;
+}
 

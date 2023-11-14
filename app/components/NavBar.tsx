@@ -1,9 +1,9 @@
+"use client";
 import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import FavDogs from "./FavDogs";
-import LocationSearchForm from "./LocationSearchForm";
+import FavDogs from "../dogs/FavDogs";
 
 const navTriggerClassNames =
   "py-2 px-3 outline-none select-none font-semibold text-base leading-6 rounded-md text-violet-600 focus:ring-2 focus:ring-violet-400 hover:bg-violet-200";
@@ -20,8 +20,14 @@ const NavBar = () => {
       await fetch(log_out_url, { credentials: "include" });
       router.push("/");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
+  const navigateToSearchLocation = () => {
+    router.push("/locations");
+  };
+  const navigateToSearchDogs = () => {
+    router.push("/dogs");
   };
 
   return (
@@ -40,23 +46,26 @@ const NavBar = () => {
           </NavigationMenu.Content>
         </NavigationMenu.Item>
 
-        <NavigationMenu.Item>
-          <NavigationMenu.Trigger className={"flex " + navTriggerClassNames}>
-            Search Locations{" "}
-            <CaretDownIcon className={caretIconClassNames} aria-hidden />
-          </NavigationMenu.Trigger>
-          <NavigationMenu.Content
-            className={navContentClassNames}
+        <NavigationMenu.Item className="relative">
+          <button
+            className={navTriggerClassNames}
+            onClick={navigateToSearchLocation}
           >
-            <LocationSearchForm />
-          </NavigationMenu.Content>
+            Search Location
+          </button>
         </NavigationMenu.Item>
 
         <NavigationMenu.Item className="relative">
           <button
             className={navTriggerClassNames}
-            onClick={logOut}
+            onClick={navigateToSearchDogs}
           >
+            Search for Dogs
+          </button>
+        </NavigationMenu.Item>
+
+        <NavigationMenu.Item className="relative">
+          <button className={navTriggerClassNames} onClick={logOut}>
             Log Out
           </button>
         </NavigationMenu.Item>
