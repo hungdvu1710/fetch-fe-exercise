@@ -4,7 +4,7 @@ import { Card, Text } from "@radix-ui/themes";
 
 const LocationCard = ({ location }: { location: Location }) => {
   return (
-    <Card variant="classic" style={{ maxWidth: 300 }}>
+    <Card variant="classic" style={{ maxWidth: 300 }} data-testId="location-card">
       <Text as="div" size="2" weight="bold">
         {location.city}, {location.state}
       </Text>

@@ -68,7 +68,6 @@ const mockSearchWithIdsURLResult = [
 
 jest.mock("axios");
 const dogs_search_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs/search";
-const dogs_search_with_ids_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs";
 
 describe("Dog Page Correct Rendering", () => {
   it("should render the form", () => {
@@ -419,9 +418,15 @@ describe("Favorite Dogs", () => {
 
     const favoriteDogs = screen.getByRole("button", { name: "Favorite" });
 
-    const dogCard1FavoriteCheckbox = screen.getByTestId("dog-card-fav-check-testId1");
-    const dogCard2FavoriteCheckbox = screen.getByTestId("dog-card-fav-check-testId2");
-    const dogCard3FavoriteCheckbox = screen.getByTestId("dog-card-fav-check-testId3");
+    const dogCard1FavoriteCheckbox = screen.getByTestId(
+      "dog-card-fav-check-testId1"
+    );
+    const dogCard2FavoriteCheckbox = screen.getByTestId(
+      "dog-card-fav-check-testId2"
+    );
+    const dogCard3FavoriteCheckbox = screen.getByTestId(
+      "dog-card-fav-check-testId3"
+    );
 
     await userEvent.click(dogCard1FavoriteCheckbox);
     await userEvent.click(dogCard2FavoriteCheckbox);
@@ -476,8 +481,12 @@ describe("Favorite Dogs", () => {
 
     const favoriteDogs = screen.getByRole("button", { name: "Favorite" });
 
-    const dogCard1FavoriteCheckbox = screen.getByTestId("dog-card-fav-check-testId1");
-    const dogCard2FavoriteCheckbox = screen.getByTestId("dog-card-fav-check-testId2");
+    const dogCard1FavoriteCheckbox = screen.getByTestId(
+      "dog-card-fav-check-testId1"
+    );
+    const dogCard2FavoriteCheckbox = screen.getByTestId(
+      "dog-card-fav-check-testId2"
+    );
 
     await userEvent.click(dogCard1FavoriteCheckbox);
     await userEvent.click(dogCard2FavoriteCheckbox);

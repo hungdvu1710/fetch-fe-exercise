@@ -56,6 +56,7 @@ const LocationPagination = ({ requestBody, setRequestBody, numResults }: Props) 
         variant="soft"
         disabled={!requestBody.from}
         onClick={() => changePage(requestBody.from ? requestBody.from - 25 : 0)}
+        data-testid="backward-pagination"
       >
         <ChevronLeftIcon />
       </Button>
@@ -64,6 +65,7 @@ const LocationPagination = ({ requestBody, setRequestBody, numResults }: Props) 
         variant="soft"
         disabled={!checkIfNext()}
         onClick={() => changePage(requestBody.from ? requestBody.from + 25 : 25)}
+        data-testid="forward-pagination"
       >
         <ChevronRightIcon />
       </Button>

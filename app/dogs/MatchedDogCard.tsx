@@ -2,7 +2,6 @@ import { Avatar, Box, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { DogCardProps } from "../types";
-import Head from "next/head";
 
 const dogs_search_with_ids_url = process.env.NEXT_PUBLIC_BASE_URL + "/dogs";
 
@@ -27,7 +26,7 @@ const MatchedDogCard = ({ matchedId }: { matchedId: string }) => {
   }, [matchedId]);
 
   return (
-    <Card size="3" style={{ width: 500 }}>
+    <Card size="3" style={{ width: 500 }} data-testId="match-dog-card">
       <Heading size="3">Your Match!!!</Heading>
       <Flex gap="4" align="center">
         <Avatar

@@ -22,12 +22,9 @@ const locations_search_url =
   process.env.NEXT_PUBLIC_BASE_URL + "/locations/search";
 
 const LocationSearchForm = () => {
-  const { locationList, setLocationList, setIsAuthenticated } = useGlobalContext();
-  const {
-    register,
-    handleSubmit,
-    control,
-  } = useForm<locationSearchInputs>({
+  const { locationList, setLocationList, setIsAuthenticated } =
+    useGlobalContext();
+  const { register, handleSubmit, control } = useForm<locationSearchInputs>({
     resolver: zodResolver(locationSearchSchema),
   });
 
@@ -38,6 +35,7 @@ const LocationSearchForm = () => {
     from: 0,
   });
   const [numResults, setNumResults] = React.useState(0);
+  const [hasResults, setHasResults] = React.useState(true);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -50,9 +48,10 @@ const LocationSearchForm = () => {
       } else {
         setIsAuthenticated(true);
         setRequestBody(data);
-      const { results, total } = response.data;
-      setNumResults(total);
-      setLocationList(results);
+        const { results, total } = response.data;
+        setHasResults(total > 0)
+        setNumResults(total);
+        setLocationList(results);
       }
     } catch (error) {
       setIsAuthenticated(false);
@@ -62,26 +61,36 @@ const LocationSearchForm = () => {
 
   return (
     <div className="space-y-3 ml-3 mr-3">
-      <form onSubmit={onSubmit} className="space-y-3 max-w-xl">
+      <form
+        onSubmit={onSubmit}
+        className="space-y-3 max-w-xl"
+        aria-label="location search form"
+      >
         <Heading>Let&rsquo;s find the Zip Codes for your location</Heading>
         <Controller
           name="states"
           control={control}
           render={({ field: { onChange, name, ref } }) => (
-            <Select
-              ref={ref}
-              name={name}
-              placeholder="Select a state"
-              isClearable
-              isSearchable
-              isMulti
-              options={statesData}
-              onChange={(e: any) =>
-                e.value
-                  ? onChange(e.value)
-                  : onChange(e.map((c: any) => c.value))
-              }
-            />
+            <>
+              <label htmlFor={name} style={{ display: "none" }}>
+                {name}
+              </label>
+              <Select
+                ref={ref}
+                name={name}
+                inputId={name}
+                placeholder="Select a state"
+                isClearable
+                isSearchable
+                isMulti
+                options={statesData}
+                onChange={(e: any) =>
+                  e.value
+                    ? onChange(e.value)
+                    : onChange(e.map((c: any) => c.value))
+                }
+              />
+            </>
           )}
         ></Controller>
         <TextFieldRoot>
@@ -89,6 +98,7 @@ const LocationSearchForm = () => {
         </TextFieldRoot>
         <Button>Search</Button>
       </form>
+      {!hasResults && <Heading as="h3" size="3" color="gray">No results found</Heading>}
       <LocationResults />
       {locationList.length > 0 && (
         <LocationPagination
