@@ -13,7 +13,7 @@ const FavDogCard = ({ props }: { props: FavoriteDog }) => {
   }
 
   return (
-    <Card style={{ maxWidth: 300 }}>
+    <Card style={{ maxWidth: 300 }} data-testid="fav-dog-card">
       <Flex gap="3" align="center">
         <Avatar size="3" src={props.img} radius="full" fallback="T" />
         <Box>
@@ -21,7 +21,7 @@ const FavDogCard = ({ props }: { props: FavoriteDog }) => {
             <Text as="div" size="3" weight="bold">
               {props.name}
             </Text>
-            <IconButton size="1" color="red" radius="large" variant="ghost" asChild onClick={handleClick}>
+            <IconButton size="1" color="red" radius="large" variant="ghost" data-testid="remove-fav-dog" asChild onClick={handleClick}>
               <Cross2Icon />
             </IconButton>
           </Flex>

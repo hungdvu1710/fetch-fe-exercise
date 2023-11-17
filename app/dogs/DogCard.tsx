@@ -25,7 +25,7 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
   }
 
   return (
-    <Card>
+    <Card data-testid="dog-card">
       <Inset clip="padding-box" side="top" pb="current">
         <Image
           src={props.img}
@@ -44,7 +44,7 @@ const DogCard = ({ props }: { props: DogCardProps }) => {
         <Strong>{props.name}</Strong>
       </Text>
       <div className="space-x-2">
-        <input type="checkbox" id={props.id} onChange={handleChange} checked={favoriteList.some((favDog) => favDog.id === props.id)}/>
+        <input type="checkbox" id={props.id} onChange={handleChange} data-testid={"dog-card-fav-check-" + props.id} checked={favoriteList.some((favDog) => favDog.id === props.id)}/>
         <label htmlFor={props.id}>Favorite</label>
       </div>
       <Text as="div" size="3">

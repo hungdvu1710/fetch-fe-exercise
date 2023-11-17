@@ -82,7 +82,7 @@ const NavBar = () => {
       </NavigationMenu.List>
 
       <div className="absolute flex justify-center w-full top-full">
-        <NavigationMenu.Viewport className="overflow-x-hidden overflow-y-scroll m-1 w-full bg-white rounded-lg shadow-2xl h-96 transition-width transform-300 ease" />
+        <NavigationMenu.Viewport style={{ pointerEvents: "auto" }} className="overflow-x-hidden overflow-y-scroll m-1 w-full bg-white rounded-lg shadow-2xl h-96 transition-width transform-300 ease" />
       </div>
     </NavigationMenu.Root>
   );

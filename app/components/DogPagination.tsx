@@ -37,6 +37,7 @@ const DogPagination = ({ prev, next, setPaginationUrls }: Props) => {
         color="gray"
         variant="soft"
         disabled={!prev}
+        data-testid="backward-pagination"
         onClick={() => changePage(prev)}
       >
         <ChevronLeftIcon />
@@ -44,6 +45,7 @@ const DogPagination = ({ prev, next, setPaginationUrls }: Props) => {
       <Button
         color="gray"
         variant="soft"
+        data-testid="forward-pagination"
         disabled={!next}
         onClick={() => changePage(next)}
       >

@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import Home from "@/app/page";
 import userEvent from "@testing-library/user-event";
 
+const login_url = process.env.NEXT_PUBLIC_BASE_URL + "/auth/login";
+
 jest.mock("next/navigation", () => {
   const router = {
     push: jest.fn(),
@@ -55,7 +57,7 @@ describe("Log In", () => {
       await userEvent.click(logInButton);
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://frontend-take-home-service.fetch.com/auth/login",
+        login_url,
         {
           method: "POST",
           credentials: "include",

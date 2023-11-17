@@ -27,19 +27,23 @@ const CustomSelect = ({
       name={selectName}
       control={control}
       render={({ field: { onChange, name, ref } }) => (
-        <Select
-          className={className ? className : ""}
-          ref={ref}
-          name={name}
-          placeholder={placeholder}
-          isClearable={isClearable}
-          isSearchable
-          isMulti={isMulti}
-          onChange={(e: any) =>
-            e.value ? onChange(e.value) : onChange(e.map((c: any) => c.value))
-          }
-          options={data}
-        />
+        <>
+          <label htmlFor={name} style={{ display: "none"}}>{name}</label>
+          <Select
+            className={className ? className : ""}
+            ref={ref}
+            name={name}
+            inputId={name}
+            placeholder={placeholder}
+            isClearable={isClearable}
+            isSearchable
+            isMulti={isMulti}
+            onChange={(e: any) =>
+              e.value ? onChange(e.value) : onChange(e.map((c: any) => c.value))
+            }
+            options={data}
+          />
+        </>
       )}
     ></Controller>
   );

@@ -1,6 +1,6 @@
-import { Button, Flex, TextFieldInput, TextFieldRoot } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text, TextFieldInput, TextFieldRoot } from "@radix-ui/themes";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { dogSearchSchema } from "../validationSchema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,7 @@ const DogSearchForm = ({
   >;
 }) => {
   const { setDogIds, setIsAuthenticated } = useGlobalContext();
+  const [hasResults, setHasResults] = React.useState(true);
 
   const {
     register,
@@ -54,6 +55,9 @@ const DogSearchForm = ({
         setIsAuthenticated(true);
         const dogs_list = response.data;
         setDogIds(dogs_list.resultIds);
+        if (dogs_list.resultIds.length == 0) setHasResults(false);
+        else setHasResults(true);
+
         setPaginationUrls({
           next: response.data.next ?? "",
           prev: response.data.prev ?? "",
@@ -67,7 +71,7 @@ const DogSearchForm = ({
   });
 
   return (
-    <form className="my-2 space-y-3 max-w-xl" onSubmit={onSubmit}>
+    <form className="my-2 space-y-3 max-w-xl" onSubmit={onSubmit} aria-label="dog search form">
       <CustomSelect
         control={control}
         selectName={"breeds"}
@@ -136,6 +140,7 @@ const DogSearchForm = ({
         </TextFieldRoot>
       </Flex>
       <Button>Get Dogs</Button>
+      {!hasResults && <Heading as="h3" size="3" color="gray">No results found</Heading>}
     </form>
   );
 };
